@@ -1,6 +1,13 @@
 package main.statics;
 
-public class Grass extends NaturalStaticObject {
+import main.EnumObjects;
+
+public class Grass extends Nature {
+
+    public Grass() {
+        super(EnumObjects.GRASS);
+    }
+
     @Override
     boolean isGrass() {
         return true;
