@@ -18,8 +18,10 @@ public class WorldMap {
         return cells.containsKey(cell) ? cells.get(cell).getType() : EnumObjects.NONE;
     }
 
-    private final int Y = 5; // height
-    private final int X = 5; // width
+//    Cell getCell(Cell cell) {return cells.};
+
+    private final int Y = 10; // height
+    private final int X = 10; // width
     private final int sizeMap = Y * X;
     public int getY() { return Y; }
     public int getX() { return X; }
@@ -90,15 +92,22 @@ public class WorldMap {
         }
 
         if (!cells.containsValue(new Predator()) || !cells.containsValue(new Herbivore())) {
-            add(new Cell(1, 1), new Predator());
+            add(new Cell(4, 1), new Predator());
             add(new Cell(Y - 1 , X - 1), new Herbivore());
 
             ///////////
-            add(new Cell(2, 2), new Rock());
+            add(new Cell(5, 5), new Rock());
+            add(new Cell(6, 5), new Rock());
+            add(new Cell(7, 5), new Rock());
+            add(new Cell(8, 5), new Rock());
             add(new Cell(3, 3), new Rock());
             add(new Cell(4, 3), new Rock());
-            add(new Cell(2, 3), new Rock());
-//            add(new Cell(1, 3), new Rock()); // dont work
+            add(new Cell(5, 6), new Rock());
+            add(new Cell(1, 2), new Rock());
+            add(new Cell(8, 8), new Rock());
+            add(new Cell(9, 8), new Rock());
+//            add(new Cell(7, 8), new Rock());
+            add(new Cell(6, 8), new Rock());
         }
     }
 }

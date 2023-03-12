@@ -33,7 +33,8 @@ public class Cell implements Comparable<Cell> {
         return "Cell{" +
                 "x=" + x +
                 ", y=" + y +
-                ", pathCost=" + pathCost +
+//                ", pathCost=" + pathCost +
+//                ", rootCell=" + rootCell +
                 '}';
     }
 

@@ -1,6 +1,8 @@
 package main;
 
 import main.dynamics.Predator;
+import main.statics.Grass;
+import main.statics.Tree;
 
 import java.util.*;
 
@@ -9,68 +11,95 @@ public class Simulation {
         WorldMap map = new WorldMap();
         map.initStartMap();
         RenderPicture.drawMap(map);
+        System.out.println("______________________");
 
-        Set<Cell> closedCells = new HashSet<>();
-        Queue<Cell> openCells = new PriorityQueue<>();
+        Cell start = new Cell(4,1);
+        Cell goal = new Cell(9,9);
 
-        Stack<Cell> goodWay = new Stack<>();
+        Queue<Cell> queue = new PriorityQueue<>();
+        queue.add(start);
+        Map<Cell, Cell> cameFrom = new HashMap<>();
+        cameFrom.put(start, null);
+        Map<Cell, Integer> costSoFar = new HashMap<>();
+        costSoFar.put(start, 0);
 
-        // f(x) = g(x) + h(x)
-        // f(x) – вес ячейки
-        // g(x) – длина пути из начальной точки в текущую ячейку (по диагонале – 14, прямо – 10)
-        // h(x) – эвристическое приближение (примерная длина от текущей до финальной, игнор препятствий, умнож. на 10)
+        while (!queue.isEmpty()) {
+            Cell currentCell = queue.poll();
 
-        int i = 1;
-        int j = 1;
+            if (currentCell == goal) return;
 
-        int final_i = 4;
-        int final_j = 4;
-
-        openCells.add(new Cell(i,j));
-
-        while (!openCells.isEmpty()) {
-            Cell currentCell = openCells.poll();
-            if(!goodWay.contains(currentCell)) goodWay.add(currentCell);
-            i = currentCell.getY();
-            j = currentCell.getX();
-
-            if (closedCells.contains(currentCell)) {
-                continue;
-            }
-
-            if (i == final_i && j == final_j) {
-                System.out.println("ALL PIGS MUST DIE!!!");
-                map.setEntityInCell(currentCell, new Predator());
-                break;
-            }
-
-            for (int row = i - 1; row < i + 2; row++) {
-                for (int col = j - 1; col < j + 2; col++) {
-                    if (map.isEmptyCell(new Cell(row, col)) && (row != i || col != j)
-                    && (row >= 0 && row <= final_i) && (col >= 0 && col <= final_j)) {
-                        Cell tmp = new Cell(row, col);
-                        int pathCost = tmp.getPathCost();
-                        if (row != i && col != j) {
-                            pathCost += 14;
-                        } else {
-                            pathCost += 10;
-                        }
-                        pathCost += ((final_i - row) + (final_j - col))*10;
-                        tmp.setPathCost(pathCost);
-                        openCells.add(tmp);
+            for (Cell nextCell : findNeighbors(currentCell)) {
+                int newCost = costSoFar.get(currentCell) + costPath(nextCell, currentCell);
+                if (nextCell.getX() < map.getX() && nextCell.getY() < map.getY()
+                    && map.isEmptyCell(nextCell)) {
+                    if (!costSoFar.containsKey(nextCell) || newCost < costSoFar.get(nextCell)) {
+                        costSoFar.put(nextCell, newCost);
+                        nextCell.setPathCost(newCost + heuristic(nextCell, goal));
+                        queue.add(nextCell);
+                        cameFrom.put(nextCell, currentCell);
                     }
                 }
             }
-            closedCells.add(currentCell);
-            map.setEntityInCell(currentCell, new Predator());
-//            System.out.println(openCells);
         }
-        System.out.println(goodWay);
+
+        Cell curr = goal;  //  draw path to goal // DELETE
+        while (curr != start) {
+            curr = cameFrom.get(curr);
+            map.setEntityInCell(curr, new Predator());
+        }
+
         RenderPicture.drawMap(map);
+    }
+
+    private static List<Cell> findNeighbors (Cell cell) {
+        List<Cell> neighbors = new ArrayList<>();
+        int i = cell.getY();
+        int j = cell.getX();
+        for (int row = i - 1; row < i + 2; row++) {
+            for (int col = j - 1; col < j + 2; col++) {
+                if ((row != i || col != j) && (row >= 0) && (col >= 0)) {
+                    neighbors.add(new Cell(row, col));
+                }
+            }
+        }
+        return neighbors;
+    }
+
+    private static int heuristic (Cell current, Cell goal) {
+        return ((goal.getX() - current.getX()) + (goal.getY() - current.getY()))*10;
+    }
+
+    public static int costPath(Cell next, Cell current) {
+        return next.getY() != current.getY() && next.getX() != current.getX() ? 14 : 10;
     }
 }
 
-
+//
+//
+//        for (int row = i - 1; row < i + 2; row++) {
+//        for (int col = j - 1; col < j + 2; col++) {
+//        if (map.isEmptyCell(new Cell(row, col)) && (row != i || col != j)
+//        && (row >= 0 && row <= final_i) && (col >= 0 && col <= final_j)) {
+//        Cell tmp = new Cell(row, col);
+//
+//        System.out.println("1 "+tmp);
+//        int pathCost = tmp.getPathCost();
+//        if (row != i && col != j) {
+//        pathCost += 14;
+//        } else {
+//        pathCost += 10;
+//        }
+//        pathCost += ((final_i - row) + (final_j - col))*10;
+//
+//        tmp.rootCell = currentCell;
+//        tmp.setPathCost(pathCost);
+//
+//        openCells.add(tmp);
+//
+//        System.out.println("2 "+tmp);
+//        }
+//        }
+//        }
 
 
 
