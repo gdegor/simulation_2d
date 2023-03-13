@@ -23,7 +23,5 @@ public class RenderPicture {
             }
             System.out.print("\n");
         }
-//        System.out.println(Arrays.toString(map.getAllMaxCounts()));
-//        System.out.println(Arrays.toString(map.getChancesIntervals()));
     }
 }
