@@ -38,8 +38,8 @@ public class WorldMap {
         return X;
     }
 
-    //    private final float[] chancesSpawn = {0.03f, 0.10f, 0.10f, 0.12f, 0.08f}; // predators, herbivore, tree, grass, rock
-    private final float[] chancesSpawn = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    private final float[] chancesSpawn = {0.03f, 0.10f, 0.10f, 0.12f, 0.08f}; // predators, herbivore, tree, grass, rock
+//    private final float[] chancesSpawn = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
     private final int[] allMaxCounts = new int[5];
     private final int[] chancesIntervals = new int[4];
@@ -49,10 +49,8 @@ public class WorldMap {
     }
 
     public void setEntityInCell(Cell cell, Creature creature) {
-//        System.out.println(creature+" SEIC "+creature.getHealthPoints());
         cells.remove(cell);
         cells.put(cell, creature);
-//        System.out.println(creature+" 2SEIC2 "+creature.getHealthPoints());
     }
 
     public void clearCell(Cell cell) {
@@ -110,12 +108,10 @@ public class WorldMap {
         }
 
         if (!cells.containsValue(new Predator()) || !cells.containsValue(new Herbivore())) {
-//            add(new Cell(5, 5), new Predator());
+            add(new Cell(0, 0), new Predator());
             add(new Cell(Y - 1, X - 1), new Herbivore());
-//            add(new Cell(0 , 9), new Herbivore());
 
-//            add(new Cell(9, 3), new Grass());
-            add(new Cell(4, 4), new Grass());
+//            add(new Cell(4, 4), new Grass());
 //
 //            ///////////
 //            add(new Cell(5, 5), new Rock());

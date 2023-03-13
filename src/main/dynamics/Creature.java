@@ -91,7 +91,6 @@ public abstract class Creature extends Entity {
     }
 
     public void makeMove(Cell start, WorldMap map) {
-        System.out.println(getHealthPoints());
         if (this.getType() == TypeEntity.HERBIVORE) {
             for (Cell neighbor : findNeighbors(start)) {
                 if (map.getTypeCell(neighbor) == TypeEntity.PREDATOR) {
@@ -102,6 +101,7 @@ public abstract class Creature extends Entity {
                     Grass grass = (Grass) map.getEntityFromCell(neighbor);
                     setHealthPoints(getHealthPoints() + grass.getHealPower());
                     map.clearCell(neighbor);
+                    break;
                 }
             }
         }
@@ -137,9 +137,4 @@ public abstract class Creature extends Entity {
         }
         return null;
     }
-
-    static void attackVictim(Cell victim) {
-
-    }
-
 }
