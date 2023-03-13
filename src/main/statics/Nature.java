@@ -1,12 +1,12 @@
 package main.statics;
 
 import main.Entity;
-import main.EnumObjects;
+import main.TypeEntity;
 
 public abstract class Nature extends Entity {
     boolean edible;
 
-    public Nature(EnumObjects type) {
+    public Nature(TypeEntity type) {
         super(type);
     }
 

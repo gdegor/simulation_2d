@@ -5,7 +5,6 @@ import main.statics.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class WorldMap {
     private final Map<Cell, Entity> cells = new HashMap<>();
@@ -14,38 +13,33 @@ public class WorldMap {
         cells.put(cell, entity);
     }
 
-    public EnumObjects getTypeObjectInCell(Cell cell) {
-        return cells.containsKey(cell) ? cells.get(cell).getType() : EnumObjects.NONE;
+    public TypeEntity getTypeCell(Cell cell) {
+        return cells.containsKey(cell) ? cells.get(cell).getType() : TypeEntity.NONE;
     }
-
-//    Cell getCell(Cell cell) {return cells.};
 
     private final int Y = 10; // height
     private final int X = 10; // width
     private final int sizeMap = Y * X;
     public int getY() { return Y; }
     public int getX() { return X; }
-//    public int getSizeMap() { return sizeMap; }
 
 //    private final float[] chancesSpawn = {0.05f, 0.10f, 0.10f, 0.10f, 0.08f}; // predators, herbivore, tree, grass, rock
     private final float[] chancesSpawn = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
     private final int[] allMaxCounts = new int[5];
     private final int[] chancesIntervals = new int[4];
-//    public int[] getAllMaxCounts() { return allMaxCounts; }
-//    public int[] getChancesIntervals() { return chancesIntervals; }
 
     public boolean isEmptyCell(Cell cell) {
-        return (!cells.containsKey(cell) || Objects.equals(cells.get(cell), new Herbivore())) && cell.getY() < this.Y && cell.getX() < this.X;
+        return !cells.containsKey(cell) && cell.getY() < this.Y && cell.getX() < this.X;
     }
 
-    public void cleanCell(Cell cell) {
-        cells.remove(cell);
-    }
-
-    void setEntityInCell(Cell cell, Entity entity) {
+    public void setEntityInCell(Cell cell, Entity entity) {
         cells.remove(cell);
         cells.put(cell, entity);
+    }
+
+    public void clearCell(Cell cell) {
+        cells.remove(cell);
     }
 
     public void initStartMap() {
@@ -70,10 +64,6 @@ public class WorldMap {
     
     private void fillMap() {
         int minIndexObjects = 0;
-//        System.out.println("rand "+rand);
-//        System.out.println("max count "+Arrays.toString(allMaxCounts));
-//        System.out.println("inters "+Arrays.toString(chancesIntervals));
-
         for (int i = 0; i < Y; i++) {
             for (int j = 0; j < X; j++) {
                 int rand = minIndexObjects + (int)(Math.random() * ((sizeMap - minIndexObjects) + 1));
@@ -95,6 +85,8 @@ public class WorldMap {
             add(new Cell(4, 1), new Predator());
             add(new Cell(Y - 1 , X - 1), new Herbivore());
 
+            add(new Cell(9, 3), new Grass());
+
             ///////////
             add(new Cell(5, 5), new Rock());
             add(new Cell(6, 5), new Rock());
@@ -109,5 +101,7 @@ public class WorldMap {
 //            add(new Cell(7, 8), new Rock());
             add(new Cell(6, 8), new Rock());
         }
+
+
     }
 }

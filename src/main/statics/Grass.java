@@ -1,11 +1,11 @@
 package main.statics;
 
-import main.EnumObjects;
+import main.TypeEntity;
 
 public class Grass extends Nature {
 
     public Grass() {
-        super(EnumObjects.GRASS);
+        super(TypeEntity.GRASS);
     }
 
     @Override

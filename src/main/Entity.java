@@ -4,13 +4,13 @@ import java.util.Objects;
 
 // Корневой абстрактный класс для всех существ и объектов существующих в симуляции.
 public abstract class Entity {
-    private final EnumObjects type;
+    private final TypeEntity type;
 
-    public Entity(EnumObjects type) {
+    public Entity(TypeEntity type) {
         this.type = type;
     }
 
-    public EnumObjects getType() {
+    public TypeEntity getType() {
         return type;
     }
 

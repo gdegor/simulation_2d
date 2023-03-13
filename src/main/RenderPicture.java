@@ -1,7 +1,5 @@
 package main;
 
-import java.util.Arrays;
-
 public class RenderPicture {
     // emoji list https://unicode.org/emoji/charts/full-emoji-list.html
     // emoji go to java code https://www.fileformat.info/info/unicode/char/search.htm
@@ -14,7 +12,7 @@ public class RenderPicture {
     static void drawMap(WorldMap map) {
         for (int i = 0; i < map.getY(); i++) {
             for (int j = 0; j < map.getX(); j++) {
-                switch (map.getTypeObjectInCell(new Cell(i, j))) {
+                switch (map.getTypeCell(new Cell(i, j))) {
                     case PREDATOR -> System.out.print(predator + "\t");
                     case HERBIVORE -> System.out.print(herbivore + "\t");
                     case GRASS -> System.out.print(grass + "\t");
