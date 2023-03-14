@@ -1,4 +1,4 @@
-package main;
+package com.egovoryn;
 
 public class RenderPicture {
     // emoji list https://unicode.org/emoji/charts/full-emoji-list.html
@@ -9,7 +9,7 @@ public class RenderPicture {
     static String rock = "\uD83E\uDEA8";
     static String grass = "\uD83C\uDF3D";
 
-    static void drawMap(WorldMap map) {
+    protected void drawMap(WorldMap map) {
         for (int i = 0; i < map.getY(); i++) {
             for (int j = 0; j < map.getX(); j++) {
                 switch (map.getTypeCell(new Cell(i, j))) {

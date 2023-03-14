@@ -1,9 +1,9 @@
-package main.statics;
+package com.egovoryn.statics;
 
-import main.TypeEntity;
+import com.egovoryn.TypeEntity;
 
 public class Grass extends Nature {
-    int healPower = 2;
+    private int healPower = 1;
 
     public int getHealPower() {
         return healPower;
@@ -11,10 +11,5 @@ public class Grass extends Nature {
 
     public Grass() {
         super(TypeEntity.GRASS);
-    }
-
-    @Override
-    boolean isGrass() {
-        return true;
     }
 }

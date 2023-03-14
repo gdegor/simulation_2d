@@ -1,4 +1,4 @@
-package main;
+package com.egovoryn;
 
 public enum TypeEntity {
     PREDATOR,

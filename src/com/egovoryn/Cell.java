@@ -1,4 +1,4 @@
-package main;
+package com.egovoryn;
 
 import java.util.Objects;
 
@@ -15,10 +15,6 @@ public class Cell implements Comparable<Cell> {
         return y;
     }
 
-    public int getPathCost() {
-        return pathCost;
-    }
-
     public void setPathCost(int pathCost) {
         this.pathCost = pathCost;
     }
@@ -33,8 +29,7 @@ public class Cell implements Comparable<Cell> {
         return "Cell{" +
                 "x=" + x +
                 ", y=" + y +
-//                ", pathCost=" + pathCost +
-//                ", rootCell=" + rootCell +
+                ", pathCost=" + pathCost +
                 '}';
     }
 

@@ -1,4 +1,4 @@
-package main;
+package com.egovoryn;
 
 import java.util.Objects;
 
