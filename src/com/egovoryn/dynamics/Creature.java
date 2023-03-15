@@ -66,51 +66,8 @@ public abstract class Creature extends Entity {
             result.push(curr);
         }
 
-//        System.out.println(result+"  //  ");
-
         return result;
     }
-
-
-//    protected Stack<Cell> getPathToGoal(Cell start, Cell goal, WorldMap map) {
-//        Queue<Cell> openCells = new PriorityQueue<>();
-//        openCells.add(start);
-//        Map<Cell, Integer> costFromStart = new HashMap<>();
-//        costFromStart.put(start, 0);
-//        Map<Cell, Cell> rootCell = new HashMap<>();
-//        rootCell.put(start, null);
-//
-//        while (!openCells.isEmpty()) {
-//            Cell currentCell = openCells.poll();
-//
-//            if (currentCell == goal) break;
-//
-//            for (Cell nextCell : findNeighbors(currentCell)) {
-//                int newCost = costFromStart.get(currentCell) + costPath(nextCell, currentCell);
-//                if ((map.isEmptyCell(nextCell) || map.getTypeCell(nextCell) == this.getVictim())
-//                    && checkBorder(nextCell, map)) {
-//                    if (!costFromStart.containsKey(nextCell) || newCost < costFromStart.get(nextCell)) {
-//                        costFromStart.put(nextCell, newCost);
-//                        nextCell.setPathCost(newCost + heuristic(nextCell, goal));
-//                        openCells.add(nextCell);
-//                        rootCell.put(nextCell, currentCell);
-//                    }
-//                }
-//            }
-//        }
-//
-//        Stack<Cell> result = new Stack<>();
-//        Cell curr = goal;
-//        while (curr != start) {
-//            curr = rootCell.get(curr);
-//            if (curr == null) return null;
-//            result.push(curr);
-//        }
-//
-////        System.out.println(result+"  //  ");
-//
-//        return result;
-//    }
 
     static List<Cell> findNeighbors(Cell cell) {
         List<Cell> neighbors = new ArrayList<>();

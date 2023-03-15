@@ -6,9 +6,7 @@ import com.egovoryn.WorldMap;
 
 public abstract class SpawnAction<T extends Entity> extends Action {
     protected int countTypeOnMap;
-    protected final float[] chancesSpawn = {0.03f, 0.10f, 0.10f, 0.12f, 0.08f}; // predators, herbivore, tree, grass, rock
-
-//    public
+    protected final float[] chancesSpawn = {0.03f, 0.07f, 0.10f, 0.14f, 0.10f}; // predators, herbivore, tree, grass, rock
 
     public void perform(WorldMap map) {
         int currentRate = 0;

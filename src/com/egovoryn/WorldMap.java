@@ -10,6 +10,8 @@ public class WorldMap {
     private final int Y = 10; // height
     private final int X = 10; // width
 
+    public int numberIteration = 1;
+
     private final Map<Cell, Entity> cells = new HashMap<>();
 
     public void add(Cell cell, Entity entity) {
@@ -47,6 +49,10 @@ public class WorldMap {
 
     public void clearCell(Cell cell) {
         cells.remove(cell);
+    }
+
+    public void clearMap() {
+        cells.clear();
     }
 
     public ArrayList<Cell> getAllByType(TypeEntity typeEntity) {
