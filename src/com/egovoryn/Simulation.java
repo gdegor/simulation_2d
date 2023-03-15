@@ -16,7 +16,6 @@ public class Simulation {
     public static void main(String[] args) {
         System.out.println("=======================================");
         System.out.println("Welcome to the Simulation!");
-        System.out.println("=======================================");
 
         WorldMap map = new WorldMap();
         RenderPicture renderer = new RenderPicture();
@@ -27,18 +26,18 @@ public class Simulation {
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("=======================================");
             System.out.println("You can enter:");
             System.out.println("1 - Make one step of simulation");
             System.out.println("2 - Start endless simulation");
             System.out.println("3 - Generate a new map");
             System.out.println("0 - Exit");
-            System.out.println("=======================================");
 
             switch (scanner.next()) {
                 case "1" -> nextTurn(map, renderer);
                 case "2" -> startSimulation(map, renderer);
                 case "3" -> {
+                    System.out.println("\033[H\033[2J");
+                    map.numberIteration = 1;
                     initWorld(map);
                     renderer.drawMap(map);
                 }
@@ -76,10 +75,6 @@ public class Simulation {
     }
 
     private static void nextTurn(WorldMap map, RenderPicture renderer) {
-        System.out.println("\033[H\033[2J");
-        System.out.println("=======================================");
-        System.out.println("Number of iteration: " + map.numberIteration);
-
         MoveAction moveAction = new MoveAction();
         moveAction.perform(map);
         map.numberIteration++;

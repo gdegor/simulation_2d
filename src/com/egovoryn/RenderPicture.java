@@ -9,19 +9,24 @@ public class RenderPicture {
     static String rock = "\uD83E\uDEA8";
     static String grass = "\uD83C\uDF3D";
 
-    protected void drawMap(WorldMap map) {
+    public void drawMap(WorldMap map) {
+        System.out.println("\033[H\033[2J");
+        System.out.println("=======================================");
+        System.out.println("Number of iteration: " + map.numberIteration);
+
         for (int i = 0; i < map.getY(); i++) {
             for (int j = 0; j < map.getX(); j++) {
                 switch (map.getTypeCell(new Cell(i, j))) {
-                    case PREDATOR -> System.out.print(predator + "\t");
-                    case HERBIVORE -> System.out.print(herbivore + "\t");
-                    case GRASS -> System.out.print(grass + "\t");
-                    case TREE -> System.out.print(tree + "\t");
-                    case ROCK -> System.out.print(rock + "\t");
-                    default -> System.out.print("." + "\t");
+                    case PREDATOR -> System.out.print(predator + "  ");
+                    case HERBIVORE -> System.out.print(herbivore + "  ");
+                    case GRASS -> System.out.print(grass + "  ");
+                    case TREE -> System.out.print(tree + "  ");
+                    case ROCK -> System.out.print(rock + "  ");
+                    default -> System.out.print("." + "  ");
                 }
             }
             System.out.print("\n");
         }
+        System.out.println("=======================================");
     }
 }
