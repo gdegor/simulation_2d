@@ -11,8 +11,8 @@ public class RenderPicture {
 
     public void drawMap(WorldMap map) {
         System.out.println("\033[H\033[2J");
-        System.out.println("=======================================");
         System.out.println("Number of iteration: " + map.numberIteration);
+        System.out.println("=======================================");
 
         for (int i = 0; i < map.getY(); i++) {
             for (int j = 0; j < map.getX(); j++) {
@@ -22,7 +22,7 @@ public class RenderPicture {
                     case GRASS -> System.out.print(grass + "  ");
                     case TREE -> System.out.print(tree + "  ");
                     case ROCK -> System.out.print(rock + "  ");
-                    default -> System.out.print("." + "  ");
+                    default -> System.out.print(". " + "  ");
                 }
             }
             System.out.print("\n");

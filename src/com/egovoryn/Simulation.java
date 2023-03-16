@@ -14,30 +14,30 @@ import java.util.Scanner;
 
 public class Simulation {
     public static void main(String[] args) {
-        System.out.println("=======================================");
-        System.out.println("Welcome to the Simulation!");
 
         WorldMap map = new WorldMap();
         RenderPicture renderer = new RenderPicture();
 
         initWorld(map);
         renderer.drawMap(map);
-        map.numberIteration = 1;
+        map.numberIteration = 0;
 
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the Simulation!");
+        System.out.println("=======================================");
         while (true) {
-            System.out.println("You can enter:");
-            System.out.println("1 - Make one step of simulation");
-            System.out.println("2 - Start endless simulation");
-            System.out.println("3 - Generate a new map");
-            System.out.println("0 - Exit");
-
+            gameMenu();
             switch (scanner.next()) {
-                case "1" -> nextTurn(map, renderer);
+                case "1" -> {
+                    if (herbivoresExist(map))
+                        nextTurn(map, renderer);
+                    else
+                        System.out.println("\033[H\033[2J" + "Herbivores died. Generate a new map.\n");
+                }
                 case "2" -> startSimulation(map, renderer);
                 case "3" -> {
                     System.out.println("\033[H\033[2J");
-                    map.numberIteration = 1;
+                    map.numberIteration = 0;
                     initWorld(map);
                     renderer.drawMap(map);
                 }
@@ -50,7 +50,7 @@ public class Simulation {
 
     private static void startSimulation(WorldMap map, RenderPicture renderer) {
         int checkUserEnter = 2;   // 1 pause, 2 continue, 3 stop
-        while (!map.getAllByType(TypeEntity.HERBIVORE).isEmpty()) {
+        while (herbivoresExist(map)) {
             if (checkUserEnter == 2) {
                 nextTurn(map, renderer);
                 System.out.println("You can enter: 1 - to pause, 2 - to continue, 3 - to stop");
@@ -58,13 +58,13 @@ public class Simulation {
             checkUserEnter = pauseSimulation(checkUserEnter);
             if (checkUserEnter == 3) return;
         }
-        System.out.println("Herbivores died.");
+        System.out.println("Herbivores died. Generate a new map.\n");
     }
 
     private static int pauseSimulation(int current) {
         Scanner scanner = new Scanner(System.in);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
             if (System.in.available() > 0) {
                 return scanner.nextInt();
             }
@@ -96,5 +96,17 @@ public class Simulation {
         initActions.add(new RockSpawnAction(map));
         initActions.add(new TreeSpawnAction(map));
         return initActions;
+    }
+
+    private static void gameMenu() {
+        System.out.println("You can enter:");
+        System.out.println("1 - Make one step of simulation");
+        System.out.println("2 - Start endless simulation");
+        System.out.println("3 - Generate a new map");
+        System.out.println("0 - Exit");
+    }
+
+    private static boolean herbivoresExist(WorldMap map) {
+        return !map.getAllByType(TypeEntity.HERBIVORE).isEmpty();
     }
 }

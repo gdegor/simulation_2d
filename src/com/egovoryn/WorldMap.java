@@ -10,7 +10,7 @@ public class WorldMap {
     private final int Y = 10; // height
     private final int X = 10; // width
 
-    public int numberIteration = 1;
+    public int numberIteration = 0;
 
     private final Map<Cell, Entity> cells = new HashMap<>();
 
