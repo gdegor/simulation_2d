@@ -96,7 +96,6 @@ public abstract class Creature extends Entity {
     }
 
     public void makeMove(Cell start, WorldMap map) {
-//        System.out.println(map.getEntityFromCell(start)+" "+start);
         if (getHealthPoints() <= 0) {
             map.clearCell(start);
         } else {
@@ -106,13 +105,10 @@ public abstract class Creature extends Entity {
                 if (path != null && !path.empty()) {
                     map.clearCell(start);
                     Cell move = path.pop();
-//                    System.out.println("st "+start);
-//                    System.out.println("mv "+move);
                     int maxSteps = Math.min(speedMove, path.size());
                     for (int i = 0; i < maxSteps; i++) {
                         move = path.pop();
                     }
-//                    System.out.println("mv2 "+move);
                     map.setEntityInCell(move, this);
                 }
             }
