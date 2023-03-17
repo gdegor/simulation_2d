@@ -11,15 +11,15 @@ public abstract class Creature extends Entity {
     private final int speedMove;
     private final TypeEntity victim;
     protected int healthPoints;
-    protected int hungryIndicator;
+    protected int bellyful;
 
 
     public Creature(TypeEntity type) {
         super(type);
-        this.victim = type == TypeEntity.PREDATOR ? TypeEntity.HERBIVORE : TypeEntity.GRASS;
-        this.speedMove = type == TypeEntity.PREDATOR ? 2 : 1;
-        this.healthPoints = type == TypeEntity.PREDATOR ? 3 : 5;
-        this.hungryIndicator = type == TypeEntity.PREDATOR ? 3 : 5;
+        victim = type == TypeEntity.PREDATOR ? TypeEntity.HERBIVORE : TypeEntity.GRASS;
+        speedMove = type == TypeEntity.PREDATOR ? 2 : 1;
+        healthPoints = type == TypeEntity.PREDATOR ? 3 : 5;
+        bellyful = type == TypeEntity.PREDATOR ? 5 : 4;
     }
 
     protected Stack<Cell> getPathToGoal(Cell start, Cell goal, WorldMap map) {
@@ -35,7 +35,7 @@ public abstract class Creature extends Entity {
             if (currentCell == goal) break;
             for (Cell nextCell : findNeighbors(currentCell)) {
                 int newCost = costFromStart.get(currentCell) + costPath(nextCell, currentCell);
-                if ((map.isEmptyCell(nextCell) || map.getTypeCell(nextCell) == this.victim)
+                if ((map.isEmptyCell(nextCell) || map.getTypeCell(nextCell) == victim)
                         && checkBorder(nextCell, map)) {
                     if (!costFromStart.containsKey(nextCell) || newCost < costFromStart.get(nextCell)) {
                         costFromStart.put(nextCell, newCost);
@@ -87,11 +87,11 @@ public abstract class Creature extends Entity {
     }
 
     public void makeMove(Cell start, WorldMap map) {
-        if (hungryIndicator <= 0) healthPoints--;
+        if (bellyful <= 0) healthPoints--;
         if (healthPoints <= 0) {
             map.clearCell(start);
         } else {
-            Cell goal = smellVictim(map, start, victim);
+            Cell goal = smellVictim(map, start);
             if (goal != null) {
                 Stack<Cell> path = getPathToGoal(start, goal, map);
                 if (path != null && !path.empty()) {
@@ -107,7 +107,7 @@ public abstract class Creature extends Entity {
         }
     }
 
-    private Cell smellVictim(WorldMap map, Cell start, TypeEntity victim) {
+    private Cell smellVictim(WorldMap map, Cell start) {
         ArrayList<Cell> allVictims = map.getAllByType(victim);
         if (!allVictims.isEmpty()) {
             int min = heuristic(start, allVictims.get(0));

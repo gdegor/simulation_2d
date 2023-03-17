@@ -16,12 +16,16 @@ public class Predator extends Creature {
         for (Cell neighbor : findNeighbors(start)) {
             if (map.getTypeCell(neighbor) == TypeEntity.HERBIVORE) {
                 Herbivore herbivore = (Herbivore) map.getEntityFromCell(neighbor);
-                herbivore.healthPoints -= damageDealt;
-                hungryIndicator++;
+                if (herbivore.healthPoints <= 0) {
+                    map.clearCell(neighbor);
+                } else {
+                    herbivore.healthPoints -= damageDealt;
+                }
+                bellyful++;
                 return;
             }
         }
-        hungryIndicator--;
+        bellyful--;
         super.makeMove(start, map);
     }
 }

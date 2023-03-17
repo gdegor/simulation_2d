@@ -27,6 +27,7 @@ public class Main {
                     renderer.drawMap(map);
                 }
                 case "0" -> System.exit(0);
+                default -> System.out.println("\033[H\033[2J");
             }
         }
     }

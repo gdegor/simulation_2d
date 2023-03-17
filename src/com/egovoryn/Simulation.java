@@ -13,16 +13,10 @@ public class Simulation {
         this.map = map;
     }
 
-    void startSimulation(RenderPicture renderer) {
+    public void startSimulation(RenderPicture renderer) {
         int checkUserEnter = 2;   // 1 pause, 2 continue, 3 stop
         while (true) {
-            if (!herbivoresExist()) {
-                System.out.println("Herbivores died. Generate a new map.\n");
-                return;
-            } else if (!predatorsExist()) {
-                System.out.println("Predators are died. Generate a new map.\n");
-                return;
-            }
+            if (finalGame()) return;
             if (checkUserEnter == 2) {
                 nextTurn(renderer);
                 System.out.println("You can enter: 1 - to pause, 2 - to continue, 3 - to stop");
@@ -32,18 +26,18 @@ public class Simulation {
         }
     }
 
-    void nextTurn(RenderPicture renderer) {
+    public void nextTurn(RenderPicture renderer) {
         if (herbivoresExist() || predatorsExist()) {
             MoveAction moveAction = new MoveAction();
             moveAction.perform(map);
             map.numberIteration++;
             renderer.drawMap(map);
         } else {
-            System.out.println("\033[H\033[2J" + "This world is died. Generate a new map.\n");
+            System.out.println("This world is died. Generate a new map.\n");
         }
     }
 
-    void initWorld() {
+    public void initWorld() {
         map.clearMap();
         for (Action action : getInitActions()) {
             action.perform(map);
@@ -79,5 +73,19 @@ public class Simulation {
 
     private boolean predatorsExist() {
         return !map.getAllByType(TypeEntity.PREDATOR).isEmpty();
+    }
+
+    private boolean finalGame() {
+        if (!herbivoresExist() && !predatorsExist()) {
+            System.out.println("This world is died. Generate a new map.\n");
+            return true;
+        } else if (!herbivoresExist()) {
+            System.out.println("Herbivores died. Generate a new map.\n");
+            return true;
+        } else if (!predatorsExist()) {
+            System.out.println("Predators are died. Generate a new map.\n");
+            return true;
+        }
+        return false;
     }
 }
