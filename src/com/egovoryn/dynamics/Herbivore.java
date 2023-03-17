@@ -7,7 +7,7 @@ import com.egovoryn.statics.Grass;
 
 public class Herbivore extends Creature {
     public Herbivore() {
-        super(TypeEntity.HERBIVORE, TypeEntity.GRASS, 1, 5);
+        super(TypeEntity.HERBIVORE);
     }
 
     @Override
@@ -15,11 +15,13 @@ public class Herbivore extends Creature {
         for (Cell neighbor : findNeighbors(start)) {
             if (map.getTypeCell(neighbor) == TypeEntity.GRASS) {
                 Grass grass = (Grass) map.getEntityFromCell(neighbor);
-                setHealthPoints(getHealthPoints() + grass.getHealPower());
+                healthPoints += grass.getHealPower();
+                hungryIndicator++;
                 map.clearCell(neighbor);
                 return;
             }
         }
+        hungryIndicator--;
         super.makeMove(start, map);
     }
 }

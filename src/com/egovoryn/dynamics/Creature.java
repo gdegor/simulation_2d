@@ -10,43 +10,32 @@ import java.util.*;
 public abstract class Creature extends Entity {
     private final int speedMove;
     private final TypeEntity victim;
-    private int healthPoints;
+    protected int healthPoints;
+    protected int hungryIndicator;
 
-    public int getHealthPoints() {
-        return healthPoints;
-    }
 
-    public void setHealthPoints(int healthPoints) {
-        this.healthPoints = healthPoints;
-    }
-
-    public TypeEntity getVictim() {
-        return victim;
-    }
-
-    public Creature(TypeEntity type, TypeEntity victim, int speedMove, int healthPoints) {
+    public Creature(TypeEntity type) {
         super(type);
-        this.victim = victim;
-        this.speedMove = speedMove;
-        this.healthPoints = healthPoints;
+        this.victim = type == TypeEntity.PREDATOR ? TypeEntity.HERBIVORE : TypeEntity.GRASS;
+        this.speedMove = type == TypeEntity.PREDATOR ? 2 : 1;
+        this.healthPoints = type == TypeEntity.PREDATOR ? 3 : 5;
+        this.hungryIndicator = type == TypeEntity.PREDATOR ? 3 : 5;
     }
 
     protected Stack<Cell> getPathToGoal(Cell start, Cell goal, WorldMap map) {
         Queue<Cell> openCells = new PriorityQueue<>();
-        openCells.add(start);
         Map<Cell, Integer> costFromStart = new HashMap<>();
-        costFromStart.put(start, 0);
         Map<Cell, Cell> rootCell = new HashMap<>();
+        openCells.add(start);
+        costFromStart.put(start, 0);
         rootCell.put(start, null);
 
         while (!openCells.isEmpty()) {
             Cell currentCell = openCells.poll();
-
             if (currentCell == goal) break;
-
             for (Cell nextCell : findNeighbors(currentCell)) {
                 int newCost = costFromStart.get(currentCell) + costPath(nextCell, currentCell);
-                if ((map.isEmptyCell(nextCell) || map.getTypeCell(nextCell) == this.getVictim())
+                if ((map.isEmptyCell(nextCell) || map.getTypeCell(nextCell) == this.victim)
                         && checkBorder(nextCell, map)) {
                     if (!costFromStart.containsKey(nextCell) || newCost < costFromStart.get(nextCell)) {
                         costFromStart.put(nextCell, newCost);
@@ -57,19 +46,10 @@ public abstract class Creature extends Entity {
                 }
             }
         }
-
-        Stack<Cell> result = new Stack<>();
-        Cell curr = goal;
-        while (curr != start) {
-            curr = rootCell.get(curr);
-            if (curr == null) return null;
-            result.push(curr);
-        }
-
-        return result;
+        return generateRoute(goal, start, rootCell);
     }
 
-    static List<Cell> findNeighbors(Cell cell) {
+    protected List<Cell> findNeighbors(Cell cell) {
         List<Cell> neighbors = new ArrayList<>();
         int i = cell.getY();
         int j = cell.getX();
@@ -83,23 +63,35 @@ public abstract class Creature extends Entity {
         return neighbors;
     }
 
-    private static int heuristic(Cell current, Cell goal) {
+    private Stack<Cell> generateRoute(Cell goal, Cell start, Map<Cell, Cell> rootCell) {
+        Stack<Cell> result = new Stack<>();
+        Cell curr = goal;
+        while (curr != start) {
+            curr = rootCell.get(curr);
+            if (curr == null) return null;
+            result.push(curr);
+        }
+        return result;
+    }
+
+    private int heuristic(Cell current, Cell goal) {
         return ((Math.abs(goal.getX() - current.getX())) + Math.abs(goal.getY() - current.getY())) * 10;
     }
 
-    private static int costPath(Cell next, Cell current) {
+    private int costPath(Cell next, Cell current) {
         return next.getY() != current.getY() && next.getX() != current.getX() ? 14 : 10;
     }
 
-    private static boolean checkBorder(Cell cell, WorldMap map) {
+    private boolean checkBorder(Cell cell, WorldMap map) {
         return cell.getX() < map.getX() && cell.getY() < map.getY();
     }
 
     public void makeMove(Cell start, WorldMap map) {
-        if (getHealthPoints() <= 0) {
+        if (hungryIndicator <= 0) healthPoints--;
+        if (healthPoints <= 0) {
             map.clearCell(start);
         } else {
-            Cell goal = smellVictim(map, start, getVictim());
+            Cell goal = smellVictim(map, start, victim);
             if (goal != null) {
                 Stack<Cell> path = getPathToGoal(start, goal, map);
                 if (path != null && !path.empty()) {
@@ -115,7 +107,7 @@ public abstract class Creature extends Entity {
         }
     }
 
-    static Cell smellVictim(WorldMap map, Cell start, TypeEntity victim) {
+    private Cell smellVictim(WorldMap map, Cell start, TypeEntity victim) {
         ArrayList<Cell> allVictims = map.getAllByType(victim);
         if (!allVictims.isEmpty()) {
             int min = heuristic(start, allVictims.get(0));

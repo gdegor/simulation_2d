@@ -15,7 +15,14 @@ public class Simulation {
 
     void startSimulation(RenderPicture renderer) {
         int checkUserEnter = 2;   // 1 pause, 2 continue, 3 stop
-        while (herbivoresExist()) {
+        while (true) {
+            if (!herbivoresExist()) {
+                System.out.println("Herbivores died. Generate a new map.\n");
+                return;
+            } else if (!predatorsExist()) {
+                System.out.println("Predators are died. Generate a new map.\n");
+                return;
+            }
             if (checkUserEnter == 2) {
                 nextTurn(renderer);
                 System.out.println("You can enter: 1 - to pause, 2 - to continue, 3 - to stop");
@@ -23,17 +30,16 @@ public class Simulation {
             checkUserEnter = pauseSimulation(checkUserEnter);
             if (checkUserEnter == 3) return;
         }
-        System.out.println("Herbivores died. Generate a new map.\n");
     }
 
     void nextTurn(RenderPicture renderer) {
-        if (herbivoresExist()) {
+        if (herbivoresExist() || predatorsExist()) {
             MoveAction moveAction = new MoveAction();
             moveAction.perform(map);
             map.numberIteration++;
             renderer.drawMap(map);
         } else {
-            System.out.println("\033[H\033[2J" + "Herbivores died. Generate a new map.\n");
+            System.out.println("\033[H\033[2J" + "This world is died. Generate a new map.\n");
         }
     }
 
@@ -69,5 +75,9 @@ public class Simulation {
 
     private boolean herbivoresExist() {
         return !map.getAllByType(TypeEntity.HERBIVORE).isEmpty();
+    }
+
+    private boolean predatorsExist() {
+        return !map.getAllByType(TypeEntity.PREDATOR).isEmpty();
     }
 }
