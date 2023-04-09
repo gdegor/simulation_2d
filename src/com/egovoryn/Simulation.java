@@ -6,7 +6,6 @@ import com.egovoryn.dynamics.Predator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Simulation {
     private final WorldMap map;
@@ -21,16 +20,8 @@ public class Simulation {
     }
 
     public void startSimulation(RenderPicture renderer) {
-        int checkUserEnter = 2;   // 1 pause, 2 continue, 3 stop
-        while (true) {
-            if (isSimulationOver()) return;
-            if (checkUserEnter == 2) {
-                nextTurn(renderer);
-                System.out.println("You can enter: 1 - to pause, 2 - to continue, 3 - to stop");
-            }
-            checkUserEnter = pauseSimulation(checkUserEnter);
-            if (checkUserEnter == 3) return;
-        }
+        nextTurn(renderer);
+        System.out.println("You can enter: 1 - to pause, 2 - to continue, 3 - to stop");
     }
 
     public void nextTurn(RenderPicture renderer) {
@@ -60,19 +51,6 @@ public class Simulation {
         return initActions;
     }
 
-    private int pauseSimulation(int current) {
-        Scanner scanner = new Scanner(System.in);
-        try {
-            Thread.sleep(1000);
-            if (System.in.available() > 0) {
-                return scanner.nextInt();
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-        return current;
-    }
-
     private boolean herbivoresExist() {
         return !map.getEntitiesOfType(Herbivore.class).isEmpty();
     }
@@ -81,7 +59,7 @@ public class Simulation {
         return !map.getEntitiesOfType(Predator.class).isEmpty();
     }
 
-    private boolean isSimulationOver() {
+    public boolean isSimulationOver() {
         if (!herbivoresExist() && !predatorsExist()) {
             System.out.println("This world is died. Generate a new map.\n");
             return true;
