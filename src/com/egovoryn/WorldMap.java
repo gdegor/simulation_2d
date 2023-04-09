@@ -2,7 +2,6 @@ package com.egovoryn;
 
 import com.egovoryn.dynamics.Creature;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,8 +15,8 @@ public class WorldMap {
         cells.put(cell, entity);
     }
 
-    public TypeEntity getTypeCell(Cell cell) {
-        return cells.containsKey(cell) ? cells.get(cell).getType() : TypeEntity.NONE;
+    public Class<? extends Entity> getTypeCell(Cell cell) {
+        return cells.get(cell) != null ? cells.get(cell).getClass() : null;
     }
 
     public Entity getEntityFromCell(Cell cell) {
@@ -53,12 +52,12 @@ public class WorldMap {
         cells.clear();
     }
 
-    public ArrayList<Cell> getAllByType(TypeEntity typeEntity) {
-        ArrayList<Cell> result = new ArrayList<>();
+    public <T> HashMap<Cell, T> getEntitiesOfType(Class<T> typeEntity) {
+        HashMap<Cell, T> result = new HashMap<>();
         for (Map.Entry<Cell, Entity> entry : cells.entrySet()) {
-            Entity tmp = entry.getValue();
-            if (tmp.getType() == typeEntity) {
-                result.add(entry.getKey());
+            if (typeEntity.isInstance(entry.getValue())) {
+                //noinspection unchecked
+                result.put(entry.getKey(), (T) entry.getValue());
             }
         }
         return result;

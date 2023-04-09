@@ -2,24 +2,23 @@ package com.egovoryn.dynamics;
 
 import com.egovoryn.Cell;
 import com.egovoryn.Entity;
-import com.egovoryn.TypeEntity;
 import com.egovoryn.WorldMap;
+import com.egovoryn.statics.Grass;
 
 import java.util.*;
 
 public abstract class Creature extends Entity {
     private final int speedMove;
-    private final TypeEntity victim;
+    private final Class<? extends Entity> victim;
     protected int healthPoints;
     protected int bellyful;
 
 
-    public Creature(TypeEntity type) {
-        super(type);
-        victim = type == TypeEntity.PREDATOR ? TypeEntity.HERBIVORE : TypeEntity.GRASS;
-        speedMove = type == TypeEntity.PREDATOR ? 2 : 1;
-        healthPoints = type == TypeEntity.PREDATOR ? 3 : 5;
-        bellyful = type == TypeEntity.PREDATOR ? 5 : 4;
+    public Creature() {
+        victim = this.getClass() == Predator.class ? Herbivore.class : Grass.class;
+        speedMove = this.getClass() == Predator.class ? 2 : 1;
+        healthPoints = this.getClass() == Predator.class ? 3 : 5;
+        bellyful = this.getClass() == Predator.class ? 5 : 4;
     }
 
     protected Stack<Cell> getPathToGoal(Cell start, Cell goal, WorldMap map) {
@@ -108,10 +107,10 @@ public abstract class Creature extends Entity {
     }
 
     private Cell smellVictim(WorldMap map, Cell start) {
-        ArrayList<Cell> allVictims = map.getAllByType(victim);
+        List<Cell> allVictims = new ArrayList<>(map.getEntitiesOfType(victim).keySet());
         if (!allVictims.isEmpty()) {
-            int min = heuristic(start, allVictims.get(0));
             Cell res = allVictims.get(0);
+            int min = heuristic(start, res);
             for (Cell tmp : allVictims) {
                 int tmpHeuristic = heuristic(start, tmp);
                 if (tmpHeuristic < min) {

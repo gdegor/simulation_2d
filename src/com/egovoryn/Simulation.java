@@ -1,6 +1,8 @@
 package com.egovoryn;
 
 import com.egovoryn.actions.*;
+import com.egovoryn.dynamics.Herbivore;
+import com.egovoryn.dynamics.Predator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,11 +70,11 @@ public class Simulation {
     }
 
     private boolean herbivoresExist() {
-        return !map.getAllByType(TypeEntity.HERBIVORE).isEmpty();
+        return !map.getEntitiesOfType(Herbivore.class).isEmpty();
     }
 
     private boolean predatorsExist() {
-        return !map.getAllByType(TypeEntity.PREDATOR).isEmpty();
+        return !map.getEntitiesOfType(Predator.class).isEmpty();
     }
 
     private boolean finalGame() {
