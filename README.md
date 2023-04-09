@@ -31,10 +31,11 @@ ___
 ## Для успешного запуска приложения:
 
 - откройте терминал
-- перейдите в папку `simulation_2d/src/`
-- скомпилируйте
-  программу `javac com/egovoryn/*.java com/egovoryn/actions/*.java com/egovoryn/dynamics/*.java com/egovoryn/statics/*.java`
-- запустите программу `java com/egovoryn/Main.java`
+- перейдите в папку `simulation_2d`
+- скомпилируйте программу
+  - `javac src/com/egovoryn/*.java src/com/egovoryn/actions/*.java src/com/egovoryn/dynamics/*.java src/com/egovoryn/statics/*.java -d classes`
+  - `jar -cvfm simulation.jar resource/META-INF/MANIFEST.MF -C classes com/egovoryn`
+- запустите программу `java -jar simulation.jar`
 
 ![1](img/1.png)
 ![3](img/3.png)
