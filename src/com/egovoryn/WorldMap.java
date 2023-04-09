@@ -1,7 +1,5 @@
 package com.egovoryn;
 
-import com.egovoryn.dynamics.Creature;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +9,7 @@ public class WorldMap {
     public int numberIteration = 0;
     private final Map<Cell, Entity> cells = new HashMap<>();
 
-    public void add(Cell cell, Entity entity) {
+    public void setEntityInCell(Cell cell, Entity entity) {
         cells.put(cell, entity);
     }
 
@@ -36,12 +34,16 @@ public class WorldMap {
     }
 
     public boolean isEmptyCell(Cell cell) {
-        return !cells.containsKey(cell) && cell.getY() < this.Y && cell.getX() < this.X;
+        return !cells.containsKey(cell);
     }
 
-    public void setEntityInCell(Cell cell, Creature creature) {
-        cells.remove(cell);
-        cells.put(cell, creature);
+    public boolean isBorderMap(Cell cell) {
+        return cell.getY() >= this.Y || cell.getX() >= this.X;
+    }
+
+    public void makeMove(Cell start, Cell move) {
+        setEntityInCell(move, getEntityFromCell(start));
+        clearCell(start);
     }
 
     public void clearCell(Cell cell) {

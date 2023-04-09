@@ -2,3 +2,5 @@
 *.iml
 src/*.class
 .DS_Store
+*.jar
+classes

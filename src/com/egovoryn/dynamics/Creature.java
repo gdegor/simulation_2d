@@ -34,8 +34,7 @@ public abstract class Creature extends Entity {
             if (currentCell == goal) break;
             for (Cell nextCell : findNeighbors(currentCell)) {
                 int newCost = costFromStart.get(currentCell) + costPath(nextCell, currentCell);
-                if ((map.isEmptyCell(nextCell) || map.getTypeCell(nextCell) == victim)
-                        && checkBorder(nextCell, map)) {
+                if ((map.isEmptyCell(nextCell) || map.getTypeCell(nextCell) == victim) && !map.isBorderMap(nextCell)) {
                     if (!costFromStart.containsKey(nextCell) || newCost < costFromStart.get(nextCell)) {
                         costFromStart.put(nextCell, newCost);
                         nextCell.setPathCost(newCost + heuristic(nextCell, goal));
@@ -81,10 +80,6 @@ public abstract class Creature extends Entity {
         return next.getY() != current.getY() && next.getX() != current.getX() ? 14 : 10;
     }
 
-    private boolean checkBorder(Cell cell, WorldMap map) {
-        return cell.getX() < map.getX() && cell.getY() < map.getY();
-    }
-
     public void makeMove(Cell start, WorldMap map) {
         if (bellyful <= 0) healthPoints--;
         if (healthPoints <= 0) {
@@ -94,13 +89,12 @@ public abstract class Creature extends Entity {
             if (goal != null) {
                 Stack<Cell> path = getPathToGoal(start, goal, map);
                 if (path != null && !path.empty()) {
-                    map.clearCell(start);
                     Cell move = path.pop();
                     int maxSteps = Math.min(speedMove, path.size());
                     for (int i = 0; i < maxSteps; i++) {
                         move = path.pop();
                     }
-                    map.setEntityInCell(move, this);
+                    map.makeMove(start, move);
                 }
             }
         }

@@ -12,7 +12,7 @@ public abstract class SpawnAction<T extends Entity> extends Action {
         int currentRate = 0;
         while (currentRate < countTypeOnMap) {
             Cell cell = getEmptyRandomCoordinates(map);
-            map.add(cell, spawnEntity(cell));
+            map.setEntityInCell(cell, spawnEntity(cell));
             currentRate++;
         }
     }
@@ -22,7 +22,7 @@ public abstract class SpawnAction<T extends Entity> extends Action {
             int x = (int) (Math.random() * map.getX());
             int y = (int) (Math.random() * map.getY());
             Cell cell = new Cell(y, x);
-            if (map.isEmptyCell(cell)) {
+            if (map.isEmptyCell(cell) && !map.isBorderMap(cell)) {
                 return cell;
             }
         }
