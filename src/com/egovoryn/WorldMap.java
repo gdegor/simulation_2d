@@ -6,7 +6,6 @@ import java.util.Map;
 public class WorldMap {
     private final int Y = 10; // height
     private final int X = 10; // width
-    public int numberIteration = 0;
     private final Map<Cell, Entity> cells = new HashMap<>();
 
     public void setEntityInCell(Cell cell, Entity entity) {
@@ -48,10 +47,6 @@ public class WorldMap {
 
     public void clearCell(Cell cell) {
         cells.remove(cell);
-    }
-
-    public void clearMap() {
-        cells.clear();
     }
 
     public <T> HashMap<Cell, T> getEntitiesOfType(Class<T> typeEntity) {

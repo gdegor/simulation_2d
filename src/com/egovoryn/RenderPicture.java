@@ -14,9 +14,10 @@ public class RenderPicture {
     static String grass = "\uD83C\uDF3D";
     static String danger_herb = "\uD83D\uDC17";
 
-    public void drawMap(WorldMap map) {
+    public void drawMap(Simulation simulation) {
+        WorldMap map = simulation.getMap();
         System.out.println("\033[H\033[2J");
-        System.out.println("Number of iteration: " + map.numberIteration);
+        System.out.println("Number of iteration: " + simulation.numberIteration);
         System.out.println("=======================================");
 
         for (int i = 0; i < map.getY(); i++) {

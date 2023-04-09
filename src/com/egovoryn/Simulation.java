@@ -10,15 +10,20 @@ import java.util.Scanner;
 
 public class Simulation {
     private final WorldMap map;
+    public int numberIteration = 0;
 
-    public Simulation(WorldMap map) {
-        this.map = map;
+    public Simulation() {
+        map = new WorldMap();
+    }
+
+    public WorldMap getMap() {
+        return map;
     }
 
     public void startSimulation(RenderPicture renderer) {
         int checkUserEnter = 2;   // 1 pause, 2 continue, 3 stop
         while (true) {
-            if (finalGame()) return;
+            if (isSimulationOver()) return;
             if (checkUserEnter == 2) {
                 nextTurn(renderer);
                 System.out.println("You can enter: 1 - to pause, 2 - to continue, 3 - to stop");
@@ -32,15 +37,14 @@ public class Simulation {
         if (herbivoresExist() || predatorsExist()) {
             MoveAction moveAction = new MoveAction();
             moveAction.perform(map);
-            map.numberIteration++;
-            renderer.drawMap(map);
+            numberIteration++;
+            renderer.drawMap(this);
         } else {
             System.out.println("This world is died. Generate a new map.\n");
         }
     }
 
     public void initWorld() {
-        map.clearMap();
         for (Action action : getInitActions()) {
             action.perform(map);
         }
@@ -77,7 +81,7 @@ public class Simulation {
         return !map.getEntitiesOfType(Predator.class).isEmpty();
     }
 
-    private boolean finalGame() {
+    private boolean isSimulationOver() {
         if (!herbivoresExist() && !predatorsExist()) {
             System.out.println("This world is died. Generate a new map.\n");
             return true;
