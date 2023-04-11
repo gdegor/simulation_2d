@@ -1,6 +1,7 @@
 package com.egovoryn.dynamics;
 
 import com.egovoryn.Cell;
+import com.egovoryn.PathFinderAStar;
 import com.egovoryn.WorldMap;
 import com.egovoryn.statics.Grass;
 
@@ -12,7 +13,7 @@ public class Herbivore extends Creature {
         if (healthPoints >= 8) {
             danger = true;
         }
-        for (Cell neighbor : findNeighbors(start)) {
+        for (Cell neighbor : PathFinderAStar.findNeighbors(start)) {
             if (map.getTypeCell(neighbor) == Grass.class) {
                 Grass grass = (Grass) map.getEntityFromCell(neighbor);
                 healthPoints += grass.getHealPower();

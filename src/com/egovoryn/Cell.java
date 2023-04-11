@@ -7,6 +7,10 @@ public class Cell implements Comparable<Cell> {
     private final int y;
     private int pathCost = 0;
 
+    public int getPathCost() {
+        return pathCost;
+    }
+
     public int getX() {
         return x;
     }

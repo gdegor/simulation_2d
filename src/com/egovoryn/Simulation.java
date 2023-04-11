@@ -3,6 +3,7 @@ package com.egovoryn;
 import com.egovoryn.actions.*;
 import com.egovoryn.dynamics.Herbivore;
 import com.egovoryn.dynamics.Predator;
+import com.egovoryn.statics.Rock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +37,14 @@ public class Simulation {
     }
 
     public void initWorld() {
-        for (Action action : getInitActions()) {
-            action.perform(map);
-        }
+        map.setEntityInCell(new Cell(0, 0), new Herbivore());
+        map.setEntityInCell(new Cell(1, 1), new Rock());
+        map.setEntityInCell(new Cell(2, 3), new Rock());
+        map.setEntityInCell(new Cell(3, 3), new Rock());
+        map.setEntityInCell(new Cell(5, 5), new Predator());
+//        for (Action action : getInitActions()) {
+//            action.perform(map);
+//        }
     }
 
     private List<Action> getInitActions() {
