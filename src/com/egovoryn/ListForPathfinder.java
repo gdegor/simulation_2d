@@ -5,23 +5,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListForPathfinder<T> implements Comparable<ListForPathfinder<T>> {
-    List<Cell> cellList = new ArrayList<>();
+    List<PathNode> pathNodesList = new ArrayList<>();
 
     public ListForPathfinder() {
     }
 
-    public ListForPathfinder(ListForPathfinder<Cell> list) {
-        this.cellList.addAll(list.cellList);
+    public ListForPathfinder(ListForPathfinder<PathNode> list) {
+        this.pathNodesList.addAll(list.pathNodesList);
     }
 
-    public void add(Cell cell) {
-        cellList.add(cell);
+    public void add(PathNode cell) {
+        pathNodesList.add(cell);
     }
 
     @Override
     public String toString() {
         return "ListForPathfinder{" +
-                "cellList=" + cellList +
+                "cellList=" + pathNodesList +
                 '}';
     }
 
@@ -36,8 +36,8 @@ public class ListForPathfinder<T> implements Comparable<ListForPathfinder<T>> {
 //        }
 //        return pathCostThis - pathCostInput;
 
-        int pathCostThis = this.cellList.get(this.cellList.size() - 1).getPathCost();
-        int pathCostInput = o.cellList.get(o.cellList.size() - 1).getPathCost();
+        int pathCostThis = this.pathNodesList.get(this.pathNodesList.size() - 1).getPathCost();
+        int pathCostInput = o.pathNodesList.get(o.pathNodesList.size() - 1).getPathCost();
         return pathCostThis - pathCostInput;
     }
 
@@ -46,28 +46,28 @@ public class ListForPathfinder<T> implements Comparable<ListForPathfinder<T>> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ListForPathfinder<?> that = (ListForPathfinder<?>) o;
-        return Objects.equals(cellList, that.cellList);
+        return Objects.equals(pathNodesList, that.pathNodesList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cellList);
+        return Objects.hash(pathNodesList);
     }
 
-    public Cell get(int i) {
-        return cellList.get(i);
+    public PathNode get(int i) {
+        return pathNodesList.get(i);
     }
 
     public void remove(int i) {
-        cellList.remove(i);
+        pathNodesList.remove(i);
     }
 
     public boolean isEmpty() {
-        return cellList.isEmpty();
+        return pathNodesList.isEmpty();
     }
 
     public int size() {
-        return cellList.size();
+        return pathNodesList.size();
     }
 
 

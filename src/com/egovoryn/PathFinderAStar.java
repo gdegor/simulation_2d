@@ -9,30 +9,31 @@ public class PathFinderAStar {
         this.victim = victim;
     }
 
-    public ListForPathfinder<Cell> getPathToGoal(Cell start, Cell goal, WorldMap map) {
-        PriorityQueue<ListForPathfinder<Cell>> openCells = new PriorityQueue<>();
-        Map<Cell, Integer> costFromStart = new HashMap<>();
+    public ListForPathfinder<PathNode> getPathToGoal(PathNode start, PathNode goal, WorldMap map) {
+        PriorityQueue<ListForPathfinder<PathNode>> openPathNodes = new PriorityQueue<>();
+        Map<PathNode, Integer> costFromStart = new HashMap<>();
         costFromStart.put(start, 0);
 
-        ListForPathfinder<Cell> tmp = new ListForPathfinder<>();
+        ListForPathfinder<PathNode> tmp = new ListForPathfinder<>();
         tmp.add(start);
-        openCells.add(tmp);
+        openPathNodes.add(tmp);
 
-        while (!openCells.isEmpty()) {
-            ListForPathfinder<Cell> path = openCells.poll();
+        while (!openPathNodes.isEmpty()) {
+            ListForPathfinder<PathNode> path = openPathNodes.poll();
             if (path == null || path.isEmpty()) return null;
-            Cell node = path.get(path.size() - 1);
+            PathNode node = path.get(path.size() - 1);
             if (node.equals(goal)) return path;
             for (Cell nextCell : findNeighbors(node)) {
-                int newCost = costFromStart.get(node) + costMovingToNeighborCell(nextCell, node);
-                if ((map.isEmptyCell(nextCell) || map.getTypeCell(nextCell) == victim) && !map.isBorderMap(nextCell)) {
-                    if (!costFromStart.containsKey(nextCell) || newCost < costFromStart.get(nextCell)) {
-                        costFromStart.put(nextCell, newCost);
-                        nextCell.setPathCost(newCost + heuristic(nextCell, goal));
+                PathNode nextPathNode = new PathNode(nextCell);
+                int newCost = costFromStart.get(node) + costMovingToNeighborPathNode(nextPathNode, node);
+                if ((map.isEmptyCell(nextCell) || map.getTypeCell(nextCell) == victim) && map.isInsideMapBorder(nextCell)) {
+                    if (!costFromStart.containsKey(nextPathNode) || newCost < costFromStart.get(nextPathNode)) {
+                        costFromStart.put(nextPathNode, newCost);
+                        nextPathNode.setPathCost(newCost + heuristic(nextPathNode, goal));
 
-                        ListForPathfinder<Cell> newPath = new ListForPathfinder<>(path);
-                        newPath.add(nextCell);
-                        openCells.add(newPath);
+                        ListForPathfinder<PathNode> newPath = new ListForPathfinder<>(path);
+                        newPath.add(nextPathNode);
+                        openPathNodes.add(newPath);
                     }
                 }
             }
@@ -40,10 +41,10 @@ public class PathFinderAStar {
         return null;
     }
 
-    public static List<Cell> findNeighbors(Cell cell) {
+    public static List<Cell> findNeighbors(Cell current) {
         List<Cell> neighbors = new ArrayList<>();
-        int i = cell.getY();
-        int j = cell.getX();
+        int i = current.getY();
+        int j = current.getX();
         for (int row = i - 1; row < i + 2; row++) {
             for (int col = j - 1; col < j + 2; col++) {
                 if ((row != i || col != j) && (row >= 0) && (col >= 0)) {
@@ -58,11 +59,11 @@ public class PathFinderAStar {
         return ((Math.abs(goal.getX() - current.getX())) + Math.abs(goal.getY() - current.getY())) * 10;
     }
 
-    private int costMovingToNeighborCell(Cell next, Cell current) {
+    private int costMovingToNeighborPathNode(PathNode next, PathNode current) {
         return next.getY() != current.getY() && next.getX() != current.getX() ? 14 : 10;
     }
 
-    public Cell smellVictim(WorldMap map, Cell start) {
+    public PathNode smellVictim(WorldMap map, Cell start) {
         List<Cell> allVictims = new ArrayList<>(map.getEntitiesOfType(victim).keySet());
         if (!allVictims.isEmpty()) {
             Cell res = allVictims.get(0);
@@ -74,7 +75,7 @@ public class PathFinderAStar {
                     res = tmp;
                 }
             }
-            return res;
+            return new PathNode(res.getY(), res.getX());
         }
         return null;
     }

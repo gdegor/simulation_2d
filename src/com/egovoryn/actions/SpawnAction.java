@@ -22,7 +22,7 @@ public abstract class SpawnAction<T extends Entity> extends Action {
             int x = (int) (Math.random() * map.getX());
             int y = (int) (Math.random() * map.getY());
             Cell cell = new Cell(y, x);
-            if (map.isEmptyCell(cell) && !map.isBorderMap(cell)) {
+            if (map.isEmptyCell(cell) && map.isInsideMapBorder(cell)) {
                 return cell;
             }
         }

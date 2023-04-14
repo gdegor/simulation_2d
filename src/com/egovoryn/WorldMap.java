@@ -9,7 +9,7 @@ public class WorldMap {
     private final Map<Cell, Entity> cells = new HashMap<>();
 
     public void setEntityInCell(Cell cell, Entity entity) {
-        cells.put(cell, entity);
+        cells.put(new Cell(cell.getY(), cell.getX()), entity);
     }
 
     public Class<? extends Entity> getTypeCell(Cell cell) {
@@ -36,8 +36,8 @@ public class WorldMap {
         return !cells.containsKey(cell);
     }
 
-    public boolean isBorderMap(Cell cell) {
-        return cell.getY() >= this.Y || cell.getX() >= this.X;
+    public boolean isInsideMapBorder(Cell cell) {
+        return cell.getY() < this.Y && cell.getX() < this.X;
     }
 
     public void makeMove(Cell start, Cell move) {

@@ -24,9 +24,10 @@ public abstract class Creature extends Entity {
             return;
         }
         PathFinderAStar pathFinder = new PathFinderAStar(victim);
-        Cell goal = pathFinder.smellVictim(map, start);
+        PathNode goal = pathFinder.smellVictim(map, start);
         if (goal != null) {
-            ListForPathfinder<Cell> path = pathFinder.getPathToGoal(start, goal, map);
+            ListForPathfinder<PathNode> path = pathFinder.getPathToGoal(new PathNode(start), goal, map);
+//            System.out.println("path  "+path);
             if (path != null && !path.isEmpty()) {
                 int maxStepsPerMove = Math.min(speedMove, path.size());
                 Cell move = path.get(maxStepsPerMove);
