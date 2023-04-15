@@ -1,7 +1,8 @@
 package com.egovoryn.statics;
 
 public class Grass extends Nature {
+    private static final int HEAL_POWER = 1;
     public int getHealPower() {
-        return 1;
+        return HEAL_POWER;
     }
 }
