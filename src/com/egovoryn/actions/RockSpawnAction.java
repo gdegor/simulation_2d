@@ -12,7 +12,7 @@ public class RockSpawnAction extends SpawnAction<Rock> {
     }
 
     public RockSpawnAction(WorldMap map) {
-        float chanceSpawn = super.chancesSpawn[4];
+        float chanceSpawn = 0.10f;
         super.countTypeOnMap = (int) (map.getSizeMap() * chanceSpawn);
     }
 }

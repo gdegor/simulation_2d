@@ -11,7 +11,7 @@ public class GrassSpawnAction extends SpawnAction<Grass> {
     }
 
     public GrassSpawnAction(WorldMap map) {
-        float chanceSpawn = super.chancesSpawn[3];
+        float chanceSpawn = 0.18f;
         super.countTypeOnMap = (int) (map.getSizeMap() * chanceSpawn);
     }
 }

@@ -11,7 +11,7 @@ public class HerbivoreSpawnAction extends SpawnAction<Herbivore> {
     }
 
     public HerbivoreSpawnAction(WorldMap map) {
-        float chanceSpawn = super.chancesSpawn[1];
+        float chanceSpawn = 0.07f;
         super.countTypeOnMap = (int) (map.getSizeMap() * chanceSpawn);
     }
 }

@@ -7,18 +7,18 @@ public abstract class Creature extends Entity {
     private final int speedMove;
     private final Class<? extends Entity> victim;
     protected int healthPoints;
-    protected int bellyful;
+    protected int satiety;
 
 
     public Creature() {
         victim = this.getClass() == Predator.class ? Herbivore.class : Grass.class;
         speedMove = this.getClass() == Predator.class ? 2 : 1;
         healthPoints = this.getClass() == Predator.class ? 3 : 5;
-        bellyful = this.getClass() == Predator.class ? 5 : 4;
+        satiety = this.getClass() == Predator.class ? 5 : 4;
     }
 
     public void makeMove(Cell start, WorldMap map) {
-        if (bellyful <= 0) healthPoints--;
+        if (satiety <= 0) healthPoints--;
         if (healthPoints <= 0) {
             map.clearCell(start);
             return;

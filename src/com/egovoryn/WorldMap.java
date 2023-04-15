@@ -9,7 +9,7 @@ public class WorldMap {
     private final Map<Cell, Entity> cells = new HashMap<>();
 
     public void setEntityInCell(Cell cell, Entity entity) {
-        cells.put(new Cell(cell.getY(), cell.getX()), entity);
+        cells.put(cell, entity);
     }
 
     public Class<? extends Entity> getTypeCell(Cell cell) {

@@ -11,7 +11,7 @@ public class TreeSpawnAction extends SpawnAction<Tree> {
     }
 
     public TreeSpawnAction(WorldMap map) {
-        float chanceSpawn = super.chancesSpawn[2];
+        float chanceSpawn = 0.10f;
         super.countTypeOnMap = (int) (map.getSizeMap() * chanceSpawn);
     }
 }

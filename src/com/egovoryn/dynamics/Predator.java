@@ -16,11 +16,11 @@ public class Predator extends Creature {
                 } else {
                     herbivore.healthPoints -= damageDealt;
                 }
-                bellyful++;
+                satiety++;
                 return;
             }
         }
-        bellyful--;
+        satiety--;
         super.makeMove(start, map);
     }
 }

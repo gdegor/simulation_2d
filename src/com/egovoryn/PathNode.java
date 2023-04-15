@@ -1,6 +1,6 @@
 package com.egovoryn;
 
-public class PathNode extends Cell implements Comparable<PathNode> {
+public class PathNode extends Cell {
     public PathNode(int y, int x) {
         super(y, x);
     }
@@ -26,10 +26,5 @@ public class PathNode extends Cell implements Comparable<PathNode> {
                 ", y=" + getY() +
                 ", pathCost=" + pathCost +
                 '}';
-    }
-
-    @Override
-    public int compareTo(PathNode o) {
-        return this.pathCost - o.pathCost;
     }
 }

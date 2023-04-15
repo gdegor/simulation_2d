@@ -11,7 +11,7 @@ public class PredatorSpawnAction extends SpawnAction<Predator> {
     }
 
     public PredatorSpawnAction(WorldMap map) {
-        float chanceSpawn = super.chancesSpawn[0];
+        float chanceSpawn = 0.03f;
         super.countTypeOnMap = (int) (map.getSizeMap() * chanceSpawn);
     }
 }

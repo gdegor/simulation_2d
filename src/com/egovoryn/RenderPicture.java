@@ -29,7 +29,7 @@ public class RenderPicture {
                     System.out.print(predator + "  ");
                 } else if (typeCell.equals(Herbivore.class)) {
                     Herbivore herbivore1 = (Herbivore) map.getEntityFromCell(new Cell(i, j));
-                    if (herbivore1.danger) {
+                    if (herbivore1.canAttack) {
                         System.out.print(danger_herb + "  ");
                     } else {
                         System.out.print(herbivore + "  ");

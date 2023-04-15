@@ -3,15 +3,13 @@ package com.egovoryn;
 import java.util.Scanner;
 
 public class Main {
-    public static final String NEXT_TURN_SIM = "1";
-    public static final String START_ENDLESS_SIM = "2";
-    public static final String GENERATE_NEW_SIM = "3";
-    public static final String EXIT_FROM_SIM = "0";
-
-    // 1 pause, 2 continue, 3 stop
-    public static final int PAUSE_ENDLESS_SIM = 1;
-    public static final int CONTINUE_ENDLESS_SIM = 2;
-    public static final int STOP_ENDLESS_SIM = 3;
+    private static final String NEXT_MENU_ITEM = "1";
+    private static final String START_MENU_ITEM = "2";
+    private static final String GENERATE_MENU_ITEM = "3";
+    private static final String EXIT_MENU_ITEM = "0";
+    private static final int PAUSE_ENDLESS_SIM = 1;
+    private static final int CONTINUE_ENDLESS_SIM = 2;
+    private static final int STOP_ENDLESS_SIM = 3;
 
     public static void main(String[] args) {
         RenderPicture renderer = new RenderPicture();
@@ -25,30 +23,35 @@ public class Main {
         System.out.println("Welcome to the Simulation!");
         System.out.println("=======================================");
         while (true) {
-            gameMenu();
+            mainGameMenu();
             switch (scanner.next()) {
-                case NEXT_TURN_SIM -> simulation.nextTurn(renderer);
-                case START_ENDLESS_SIM -> {
-                    int checkUserEnter = CONTINUE_ENDLESS_SIM;
+                case NEXT_MENU_ITEM -> {
+                    if (!simulation.nextTurn(renderer)) System.out.println("This world is died. Generate a new map.\n");
+                }
+                case START_MENU_ITEM -> {
+                    int userInput = CONTINUE_ENDLESS_SIM;
                     while (true) {
-                        checkUserEnter = menuInSimulation(checkUserEnter);
-                        if (checkUserEnter == STOP_ENDLESS_SIM || simulation.isSimulationOver()) break;
-                        if (checkUserEnter == CONTINUE_ENDLESS_SIM) simulation.startSimulation(renderer);
+                        userInput = inputInSimulation(userInput);
+                        if (userInput == STOP_ENDLESS_SIM || isSimulationOver(simulation)) break;
+                        if (userInput == CONTINUE_ENDLESS_SIM) {
+                            simulation.startSimulation(renderer);
+                            System.out.println("You can enter: 1 - to pause, 2 - to continue, 3 - to stop");
+                        }
                     }
                 }
-                case GENERATE_NEW_SIM -> {
+                case GENERATE_MENU_ITEM -> {
                     System.out.println("\033[H\033[2J");
                     simulation = new Simulation();
                     simulation.initWorld();
                     renderer.drawMap(simulation);
                 }
-                case EXIT_FROM_SIM -> System.exit(0);
+                case EXIT_MENU_ITEM -> System.exit(0);
                 default -> System.out.println("\033[H\033[2J");
             }
         }
     }
 
-    private static void gameMenu() {
+    private static void mainGameMenu() {
         System.out.println("You can enter:");
         System.out.println("1 - Make one step of simulation");
         System.out.println("2 - Start endless simulation");
@@ -56,11 +59,11 @@ public class Main {
         System.out.println("0 - Exit");
     }
 
-    private static int menuInSimulation(int current) {
-        Scanner scanner = new Scanner(System.in);
+    private static int inputInSimulation(int current) {
         try {
             Thread.sleep(1000);
             if (System.in.available() > 0) {
+                Scanner scanner = new Scanner(System.in);
                 int res = scanner.nextInt();
                 if (res == PAUSE_ENDLESS_SIM || res == STOP_ENDLESS_SIM || res == CONTINUE_ENDLESS_SIM) return res;
                 return current;
@@ -69,5 +72,19 @@ public class Main {
             throw new RuntimeException(ex);
         }
         return current;
+    }
+
+    private static boolean isSimulationOver(Simulation sim) {
+        if (!sim.herbivoresExist() && !sim.predatorsExist()) {
+            System.out.println("This world is died. Generate a new map.\n");
+            return true;
+        } else if (!sim.herbivoresExist()) {
+            System.out.println("Herbivores died. Generate a new map.\n");
+            return true;
+        } else if (!sim.predatorsExist()) {
+            System.out.println("Predators are died. Generate a new map.\n");
+            return true;
+        }
+        return false;
     }
 }
