@@ -27,7 +27,6 @@ public abstract class Creature extends Entity {
         PathNode goal = pathFinder.smellVictim(map, start);
         if (goal != null) {
             ListForPathfinder<PathNode> path = pathFinder.getPathToGoal(new PathNode(start), goal, map);
-//            System.out.println("path  "+path);
             if (path != null && !path.isEmpty()) {
                 int maxStepsPerMove = Math.min(speedMove, path.size());
                 Cell move = path.get(maxStepsPerMove);

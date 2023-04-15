@@ -7,12 +7,12 @@ import com.egovoryn.statics.Rock;
 import com.egovoryn.statics.Tree;
 
 public class RenderPicture {
-    static String predator = "\uD83E\uDD81";
-    static String herbivore = "\uD83D\uDC37";
-    static String tree = "\uD83C\uDF33";
-    static String rock = "\uD83E\uDEA8";
-    static String grass = "\uD83C\uDF3D";
-    static String danger_herb = "\uD83D\uDC17";
+    public static final String PREDATOR = "\uD83E\uDD81";
+    public static final String HERBIVORE = "\uD83D\uDC37";
+    public static final String DANGER_HERBIVORE = "\uD83D\uDC17";
+    public static final String TREE = "\uD83C\uDF33";
+    public static final String ROCK = "\uD83E\uDEA8";
+    public static final String GRASS = "\uD83C\uDF3D";
 
     public void drawMap(Simulation simulation) {
         WorldMap map = simulation.getMap();
@@ -26,20 +26,20 @@ public class RenderPicture {
                 if (typeCell == null) {
                     System.out.print(". " + "  ");
                 } else if (typeCell.equals(Predator.class)) {
-                    System.out.print(predator + "  ");
+                    System.out.print(PREDATOR + "  ");
                 } else if (typeCell.equals(Herbivore.class)) {
-                    Herbivore herbivore1 = (Herbivore) map.getEntityFromCell(new Cell(i, j));
-                    if (herbivore1.canAttack) {
-                        System.out.print(danger_herb + "  ");
+                    Herbivore herbivore = map.getEntityFromCell(new Cell(i, j));
+                    if (herbivore.canAttack) {
+                        System.out.print(DANGER_HERBIVORE + "  ");
                     } else {
-                        System.out.print(herbivore + "  ");
+                        System.out.print(HERBIVORE + "  ");
                     }
                 } else if (typeCell.equals(Grass.class)) {
-                    System.out.print(grass + "  ");
+                    System.out.print(GRASS + "  ");
                 } else if (typeCell.equals(Tree.class)) {
-                    System.out.print(tree + "  ");
+                    System.out.print(TREE + "  ");
                 } else if (typeCell.equals(Rock.class)) {
-                    System.out.print(rock + "  ");
+                    System.out.print(ROCK + "  ");
                 }
             }
             System.out.print("\n");

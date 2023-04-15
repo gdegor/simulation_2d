@@ -5,16 +5,16 @@ import com.egovoryn.PathFinderAStar;
 import com.egovoryn.WorldMap;
 
 public class Predator extends Creature {
-    int damageDealt = 2;
+    private static final int DAMAGE_DEALT = 2;
     @Override
     public void makeMove(Cell start, WorldMap map) {
         for (Cell neighbor : PathFinderAStar.findNeighbors(start)) {
             if (map.getTypeCell(neighbor) == Herbivore.class) {
-                Herbivore herbivore = (Herbivore) map.getEntityFromCell(neighbor);
+                Herbivore herbivore = map.getEntityFromCell(neighbor);
                 if (herbivore.healthPoints <= 0) {
                     map.clearCell(neighbor);
                 } else {
-                    herbivore.healthPoints -= damageDealt;
+                    herbivore.healthPoints -= DAMAGE_DEALT;
                 }
                 satiety++;
                 return;

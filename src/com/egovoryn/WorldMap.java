@@ -16,8 +16,8 @@ public class WorldMap {
         return cells.get(cell) != null ? cells.get(cell).getClass() : null;
     }
 
-    public Entity getEntityFromCell(Cell cell) {
-        return cells.get(cell);
+    public <T extends Entity> T getEntityFromCell(Cell cell) {
+        return (T) cells.get(cell);
     }
 
     public int getSizeMap() {
