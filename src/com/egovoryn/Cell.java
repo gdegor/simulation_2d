@@ -30,10 +30,10 @@ public class Cell {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || (getClass() != o.getClass() && o.getClass() != PathNode.class)) return false;
-        Cell cell = (Cell) o;
+        if (!(o instanceof Cell cell)) return false;
         return x == cell.x && y == cell.y;
     }
+
 
     @Override
     public int hashCode() {
